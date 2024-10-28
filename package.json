@@ -1,0 +1,27 @@
+{
+  "name": "OpenHIS-ZZJ",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@chenfengyuan/vue-barcode": "^2.0.2",
+    "@mdi/font": "^7.4.47",
+    "axios": "^1.7.7",
+    "html2canvas": "^1.4.1",
+    "jsbarcode": "^3.11.6",
+    "vue": "^3.4.29",
+    "vue-qr": "^4.0.9",
+    "vue-router": "^4.3.3",
+    "vuetify": "^3.7.2",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vite": "^5.4.7"
+  }
+}
