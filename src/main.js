@@ -13,7 +13,7 @@ import * as directives from 'vuetify/directives'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import '@mdi/font/css/materialdesignicons.css'
 
-axios.defaults.baseURL = 'http://202.202.50.179:10888'
+axios.defaults.baseURL = 'http://127.0.0.1:10888'
 
 const app = createApp(App)
 const vuetify = createVuetify({
