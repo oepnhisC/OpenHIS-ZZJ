@@ -8,27 +8,30 @@
             </v-row>
             <v-row><v-col align="center" style="font-size: 20px;">自动打印中，请稍候...</v-col></v-row>
             <!-- <v-row><v-progress-linear indeterminate ></v-progress-linear></v-row> -->
-            <v-row><v-col align="center"><v-btn size="x-large" @click="generateImage()">打印</v-btn></v-col></v-row>
+            <v-row>
+                <v-col align="center"><v-btn size="x-large" @click="print('XP')">打印小票</v-btn></v-col>
+                <v-col align="center"><v-btn size="x-large" @click="print('JY')">打印检验条码</v-btn></v-col>
+            </v-row>
         </v-container>
-        <div ref="content" id="content" style="width:400px;display: inline-block;" > 
-            <v-container  >
-                <v-row><v-col  align="center" style="font-size: 25px;">XXX医院收费凭据</v-col></v-row>
+        <div ref="xiaopiao" class="xiaopiao" > 
+            <v-container  style="font-size:40px;padding-left: 40px;" >
+                <v-row><v-col  align="center" style="font-size: 60px;">XXX医院收费凭据</v-col></v-row>
                 <v-row no-gutters>
                     <v-col  align="left">姓名：测试哥</v-col>
                     <v-col  align="center"  >性别：女</v-col>
                     <v-col  align="right">年龄：100岁</v-col>
                 </v-row>
                 <v-row no-gutters>
-                    <v-col  align="left">门诊号：123456</v-col>
-                    <v-col  align="right">就诊时间：2021-01-01</v-col>
+                    <v-col  cols='5'>门诊号：123456</v-col>
+                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
                 </v-row>
                 <v-row no-gutters>
                     <v-col align="left">就诊科室：内科门诊</v-col>
                     <v-col  align="right" >主诊医生：陈医生</v-col>
                 </v-row>
                 <v-row no-gutters>
-                    <v-col  align="left">病人类别：特种病门诊</v-col>
-                    <v-col  align="right">收据号：123456</v-col>
+                    <v-col  cols="7">病人类别：特种病门诊</v-col>
+                    <v-col  cols="5">收据号：123456</v-col>
                 </v-row>
                 <v-row no-gutters><v-col>收费时间：2021-01-01 10:00:00</v-col></v-row>
                 <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
@@ -48,9 +51,9 @@
                         <v-row no-gutters><v-col>减免：0.00</v-col></v-row>
                     </v-col>
                     <v-col >
-                        <v-row style="height: 50px;"></v-row>
+                        <v-row style="height: 100px;"></v-row>
                         <v-row no-gutters><v-col align="center">扫码查看电子票据</v-col></v-row>
-                        <v-row no-gutters><v-col align="center"><vue-qr :text="payurl" ></vue-qr></v-col></v-row>
+                        <v-row no-gutters><v-col align="center"><vue-qr :text="payurl" style="width: 300px;height: 300px;"></vue-qr></v-col></v-row>
                     </v-col>
                 </v-row>
                 <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
@@ -60,11 +63,8 @@
                     <v-col cols="3">费别</v-col>
                     <v-col cols="3">金额</v-col>
                 </v-row>
-                <v-row no-gutters v-for="(item,index) in feibie" :key="index">
-                    <v-col cols="3">{{item.name}}</v-col>
-                    <v-col cols="3">{{item.money}}</v-col>
-                    <!-- <v-col cols="3">{{item.name}}</v-col>
-                    <v-col cols="3">{{item.money}}</v-col> -->
+                <v-row no-gutters >
+                    <v-col cols="3" v-for="(item) in feibieArr" >{{item}}</v-col>
                 </v-row>
                 <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
                 <v-row no-gutters><v-col align="left">注意事项：</v-col></v-row>
@@ -76,41 +76,73 @@
                 </v-row>
             </v-container>
         </div>
-        <div ref="jianyan"  style="width:275px;height:145px;display: inline-block;vertical-align:top;overflow:hidden;">
-            <v-container style="font-size: 12px;padding: 5px">
+
+        <div ref="zhiyindan" class="xiaopiao" > 
+            <v-container  style="font-size:40px;padding-left: 40px;" >
+                <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
+                <v-row><v-col  align="center" style="font-size: 60px;">指引单</v-col></v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">姓名：测试哥</v-col>
+                    <v-col  align="center"  >性别：女</v-col>
+                    <v-col  align="right">年龄：100岁</v-col>
+                </v-row>
+                <v-row no-gutters>
+                    <v-col  cols='5'>门诊号：123456</v-col>
+                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                </v-row>
+                <v-row no-gutters>申请医师：陈医生</v-row>
+                <v-row no-gutters style="height: 20px;"></v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">尿液分析+镜检</v-col>
+                    <v-col  align="right">总量：1</v-col>
+                </v-row>
+                <v-row no-gutters ><v-col align="right">门诊楼二层检验科</v-col></v-row>
+                <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
+            </v-container>
+        </div>    
+
+        <div ref="jianyan"  style="width:1100px;height:580px;display: inline-block;vertical-align:top;overflow:hidden;">
+            <v-container style="font-size: 48px;padding: 10px">
                 <v-row no-gutters>
                     <v-col cols="5" align="center" >0000259533    </v-col>
                     <v-col cols="7" align="center">2024-10-28 08:50:07</v-col>
                 </v-row>
                 <v-row no-gutters>
-                    <v-col cols="8" align="right" style="height: 70px;">
-                        <vue-barcode tag="svg" style="height: 70px;"
-                         value="24102813000021"></vue-barcode>
-                         <!--    -->
+                    <v-col cols="8" align="right" style="height: 280px;">
+                        <!-- <vue-barcode tag="img"
+                         value="24102813000021" 
+                         :options="{ displayValue: false   }"
+                         :format="'CODE39'" >
+                        </vue-barcode> -->
+                        <JianYanTiaoMa :value="'24102813000021'"/>
+                         <!-- CODE39 code128  style="height: 280px;width:540px"   -->
                     </v-col>
                     <v-col cols="4">无菌密闭容器（金鱼）</v-col>
                 </v-row>
-                <v-row no-gutters style="font-size:12px">
+                <v-row no-gutters >
                     <v-col cols="4" align="center">梁X珍</v-col>
                     <v-col cols="1">女</v-col>
                     <v-col cols="2">33岁</v-col>
                     <v-col cols="5">妇科门诊</v-col>
                 </v-row>
-                <v-row no-gutters style="font-size:12px">血常规五项、肝功三项、肾功四项、尿常规、尿蛋白、尿酸、血脂、血压、体温</v-row>
+                <v-row no-gutters >血常规五项、肝功三项、肾功四项、尿常规、尿蛋白、尿酸、血脂、血压、体温</v-row>
             </v-container>
         </div>
     </div>
 </template>
 
+
 <script>
 import { mapState,mapActions } from 'vuex'
+import JianYanTiaoMa from '@/components/JianYanTiaoMa.vue';
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 import html2canvas from 'html2canvas'
 export default {
 
     name: "PrintView",
     components: {
-        vueQr
+        vueQr,
+        JianYanTiaoMa
     },
     data() {
         return {
@@ -127,49 +159,49 @@ export default {
     mounted() {
        
     },
+    computed: {
+       feibieArr: function () {
+           let feibieS = [];
+           for(let i=0;i<this.feibie.length;i++){
+            feibieS.push(this.feibie[i].name);
+            feibieS.push(this.feibie[i].money);
+           }
+           console.log(feibieS);
+           return feibieS;
+        }
+    },
     methods: {
         ...mapActions(['clearData']),
-        print() {
-            this.generateImage();
-        },
+
         quit(){
             this.clearData();
             this.$router.replace('/'); 
         },
-        async generateImage() {
-            const element = this.$refs.jianyan;
-            const height = element.clientHeight;
-            const width = element.clientWidth;
-            console.log(height, width);
-
-            // const canvas = await  html2canvas(element, { 
-            //     scale: 2, // 提高分辨率
-            //     // width: 595, // A4 width in pixels at 72dpi
-            //     // height: 842 // A4 height in pixels at 72dpi
-            //     width:226.4,
-            //     height:226.4*height/width
-            // });
-
-            const canvas = await  html2canvas(element);
-
-            // console.log(canvas);
-            const dataURL = canvas.toDataURL('image/jpg');
-            // const link = document.createElement('a');
-            // link.href = dataURL;
-            // link.download = 'print.png';
-            // document.body.appendChild(link);
-            // link.click();
+        async print(type) {
+            var element = null;
+            if (type === 'XP') {
+                element = this.$refs.xiaopiao;
+            } else if (type === 'JY') {
+                element = this.$refs.jianyan;
+            }
             
-            this.sendImageToFlask(dataURL);
+            // const height = element.clientHeight;
+            // const width = element.clientWidth;
+            const canvas = await  html2canvas(element);
+            const dataURL = canvas.toDataURL('image/jpg');
+            
+            const response = await this.$axios.post('http://127.0.0.1:15588/print', 
+                { image: dataURL,type:type } );
+            console.log(response.data);
         },
         
-        async sendImageToFlask(dataURL) {
-            const response = await this.$axios.post('http://127.0.0.1:15588/print', {
-                image: dataURL
-            });
-            console.log(response.data);
-        }
+
     }
 };
 
 </script>
+
+
+<style scoped>
+.xiaopiao{width:800px;}
+</style>
