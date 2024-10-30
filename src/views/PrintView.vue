@@ -10,6 +10,11 @@
             <!-- <v-row><v-progress-linear indeterminate ></v-progress-linear></v-row> -->
             <v-row>
                 <v-col align="center"><v-btn size="x-large" @click="print('XP')">打印小票</v-btn></v-col>
+                <v-col align="center"><v-btn size="x-large" @click="print('ZYD')">打印指引单</v-btn></v-col>
+                <v-col align="center"><v-btn size="x-large" @click="print('YXD')">打印影像单</v-btn></v-col>
+                <v-col align="center"><v-btn size="x-large" @click="print('WCLQD')">打印卫材领取单</v-btn></v-col>
+                <v-col align="center"><v-btn size="x-large" @click="print('CXZYD')">打印采血指引单</v-btn></v-col>
+                <v-col align="center"><v-btn size="x-large" @click="print('FKZLD')">打印妇科治疗单</v-btn></v-col>
                 <v-col align="center"><v-btn size="x-large" @click="print('JY')">打印检验条码</v-btn></v-col>
             </v-row>
         </v-container>
@@ -99,7 +104,122 @@
                 <v-row no-gutters ><v-col align="right">门诊楼二层检验科</v-col></v-row>
                 <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
             </v-container>
-        </div>    
+        </div> 
+
+        <div ref="yingxiangdan" class="xiaopiao" > 
+            <v-container  style="font-size:40px;padding-left: 40px;" >
+                <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
+                <v-row><v-col  align="center" style="font-size: 60px;">影像单</v-col></v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">姓名：测试哥</v-col>
+                    <v-col  align="center"  >性别：女</v-col>
+                    <v-col  align="right">年龄：100岁</v-col>
+                </v-row>
+                <v-row no-gutters>
+                    <v-col  cols='5'>门诊号：123456</v-col>
+                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                </v-row>
+                <v-row no-gutters>申请医师：陈医生</v-row>
+                <v-row no-gutters style="height: 20px;"></v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">DR</v-col>
+                    <v-col  align="right">总量：1 胸部DR</v-col>
+                </v-row>
+                <v-row no-gutters >
+                    <v-col align="left">正位</v-col>
+                    <v-col align="right">门诊楼二层检验科</v-col>
+                </v-row>
+                <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
+            </v-container>
+        </div> 
+
+        <div ref="weicai" class="xiaopiao" > 
+            <v-container  style="font-size:40px;padding-left: 40px;" >
+                <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
+                <v-row><v-col  align="center" style="font-size: 140px;">卫材领取单</v-col></v-row>
+                <v-row><v-col  align="center" style="font-size: 130px;">此单请交给药房人员！</v-col></v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">姓名：测试哥</v-col>
+                    <v-col  align="center"  >性别：女</v-col>
+                    <v-col  align="right">年龄：100岁</v-col>
+                </v-row>
+                <v-row no-gutters>
+                    <v-col  cols='5'>门诊号：123456</v-col>
+                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                </v-row>
+                <v-row no-gutters>申请医师：陈医生</v-row>
+                <v-row no-gutters style="height: 20px;"></v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">卫材aaaaaa</v-col>
+                </v-row>
+                <v-row no-gutters >
+                    <v-col align="right">数量：2</v-col>
+                </v-row>
+                <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
+            </v-container>
+        </div>
+
+        <div ref="caixiedan" class="xiaopiao" > 
+            <v-container  style="font-size:40px;padding-left: 40px;" >
+                <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
+                <v-row><v-col  align="center" style="font-size: 60px;">采血指引单</v-col></v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">姓名：测试哥</v-col>
+                    <v-col  align="center"  >性别：女</v-col>
+                    <v-col  align="right">年龄：100岁</v-col>
+                </v-row>
+                <v-row no-gutters>
+                    <v-col  cols='5'>门诊号：123456</v-col>
+                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                </v-row>
+                <v-row no-gutters>申请医师：陈医生</v-row>
+                <v-row no-gutters style="height: 20px;"></v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">肝功五项</v-col>
+                    <v-col  align="right">总量：1 </v-col>
+                </v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">生化管（红/黄）</v-col>
+                </v-row>
+                <v-row no-gutters >
+                    <v-col align="right">综合楼一层输液区</v-col>
+                </v-row>
+                <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
+            </v-container>
+        </div> 
+
+        <div ref="fukezhiliao" class="xiaopiao" > 
+            <v-container  style="font-size:40px;padding-left: 40px;" >
+                <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
+                <v-row><v-col  align="center" style="font-size: 60px;">妇科治疗单</v-col></v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">姓名：测试哥</v-col>
+                    <v-col  align="center"  >性别：女</v-col>
+                    <v-col  align="right">年龄：100岁</v-col>
+                </v-row>
+                <v-row no-gutters>
+                    <v-col  cols='5'>门诊号：123456</v-col>
+                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                </v-row>
+                <v-row no-gutters>申请医师：陈医生</v-row>
+                <v-row no-gutters style="height: 20px;"></v-row>
+                <v-row no-gutters>
+                    <v-col  align="left">肝功五项</v-col>
+                    <v-col  align="right">总量：1 </v-col>
+                </v-row>
+                <v-row no-gutters >
+                    <v-col align="right">嘱托</v-col>
+                </v-row>
+                <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
+                <v-row no-gutters style="padding-left: 30px;padding-right: 30px;">
+                    <div v-for="(row, index) in 14" :key="index" class="row">
+                        <div v-for="(col, colIndex) in 2" :key="colIndex" class="column">
+                        </div>
+                    </div>
+                </v-row>
+            </v-container>
+        </div> 
+
 
         <div ref="jianyan"  style="width:1100px;height:580px;display: inline-block;vertical-align:top;overflow:hidden;">
             <v-container style="font-size: 48px;padding: 10px">
@@ -109,13 +229,7 @@
                 </v-row>
                 <v-row no-gutters>
                     <v-col cols="8" align="right" style="height: 280px;">
-                        <!-- <vue-barcode tag="img"
-                         value="24102813000021" 
-                         :options="{ displayValue: false   }"
-                         :format="'CODE39'" >
-                        </vue-barcode> -->
                         <JianYanTiaoMa :value="'24102813000021'"/>
-                         <!-- CODE39 code128  style="height: 280px;width:540px"   -->
                     </v-col>
                     <v-col cols="4">无菌密闭容器（金鱼）</v-col>
                 </v-row>
@@ -181,12 +295,22 @@ export default {
             var element = null;
             if (type === 'XP') {
                 element = this.$refs.xiaopiao;
-            } else if (type === 'JY') {
+            } else if (type === 'ZYD') {
+                element = this.$refs.zhiyindan;
+            } else if (type === 'YXD') {
+                element = this.$refs.yingxiangdan;
+            }else if (type === 'WCLQD') {
+                element = this.$refs.weicai;
+            }else if (type === 'CXZYD') {
+                element = this.$refs.caixiedan;
+            }else if (type === 'FKZLD') {
+                element = this.$refs.fukezhiliao;
+            }else if (type === 'JY') {
                 element = this.$refs.jianyan;
+            }else {
+                return;
             }
             
-            // const height = element.clientHeight;
-            // const width = element.clientWidth;
             const canvas = await  html2canvas(element);
             const dataURL = canvas.toDataURL('image/jpg');
             
@@ -204,4 +328,14 @@ export default {
 
 <style scoped>
 .xiaopiao{width:800px;}
+.row {
+  width: 100%;
+  display: flex;
+  height: 80px;
+}
+
+.column {
+  border: 2.5px solid black;
+  flex-basis: 50%;
+}
 </style>
