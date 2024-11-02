@@ -22,16 +22,16 @@
             <v-container  style="font-size:40px;padding-left: 40px;" >
                 <v-row><v-col  align="center" style="font-size: 60px;">XXX医院收费凭据</v-col></v-row>
                 <v-row no-gutters>
-                    <v-col  align="left">姓名：测试哥</v-col>
-                    <v-col  align="center"  >性别：女</v-col>
-                    <v-col  align="right">年龄：100岁</v-col>
+                    <v-col  align="left">姓名：{{fname}}</v-col>
+                    <v-col  align="center"  >性别：{{fsex}}</v-col>
+                    <v-col  align="right">年龄：{{fage}}</v-col>
                 </v-row>
                 <v-row no-gutters>
-                    <v-col  cols='5'>门诊号：123456</v-col>
-                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                    <v-col  cols='5'>门诊号：{{fmzh}}</v-col>
+                    <v-col  cols='7'>就诊时间：{{fjzsj}}</v-col>
                 </v-row>
                 <v-row no-gutters>
-                    <v-col align="left">就诊科室：内科门诊</v-col>
+                    <v-col align="left">就诊科室：{{fjzks}}</v-col>
                     <v-col  align="right" >主诊医生：陈医生</v-col>
                 </v-row>
                 <v-row no-gutters>
@@ -87,15 +87,15 @@
                 <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
                 <v-row><v-col  align="center" style="font-size: 60px;">指引单</v-col></v-row>
                 <v-row no-gutters>
-                    <v-col  align="left">姓名：测试哥</v-col>
-                    <v-col  align="center"  >性别：女</v-col>
-                    <v-col  align="right">年龄：100岁</v-col>
+                    <v-col  align="left">姓名：{{fname}}</v-col>
+                    <v-col  align="center"  >性别：{{fsex}}</v-col>
+                    <v-col  align="right">年龄：{{fage}}</v-col>
                 </v-row>
                 <v-row no-gutters>
-                    <v-col  cols='5'>门诊号：123456</v-col>
-                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                    <v-col  cols='5'>门诊号：{{fmzh}}</v-col>
+                    <v-col  cols='7'>就诊时间：{{fjzsj}}</v-col>
                 </v-row>
-                <v-row no-gutters>申请医师：陈医生</v-row>
+                <v-row no-gutters>申请医师：{{fzzys}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
                 <v-row no-gutters>
                     <v-col  align="left">尿液分析+镜检</v-col>
@@ -267,11 +267,20 @@ export default {
                 {name:'药费',money:0.5},
                 {name:'治疗费',money:36},
                 {name:'检查费',money:78},
-            ]
+            ],
+            fname: '',
+            fage: 0,
+            fjzsj: '',
+            fmzh: '',
+            fsex: '',
+            fsfsj: '',
+            fsjh: '',
+            fzzys: '',
+            fjzks: '',
         }
     },
     mounted() {
-       
+       this.getInfo();
     },
     computed: {
        feibieArr: function () {
@@ -291,6 +300,28 @@ export default {
             this.clearData();
             this.$router.replace('/'); 
         },
+        async getInfo(){
+            const response = await this.$axios.get('/zizhuji/printInfo');
+            if (response.data){
+                if(response.data.code == 0){
+                    console.log(response.data.result[0]);
+                    let headerData = response.data.result[0]
+                    this.fname = headerData.fname;
+                    this.fage = headerData.fage;
+                    this.fsex = headerData.fsex;
+                    this.fjzsj = headerData.fjzsj;
+                    this.fmzh = headerData.fmzh;
+                    this.fsfsj = headerData.fsfsj;
+                    this.fsjh = headerData.fsjh;
+                    this.fzzys = headerData.fzzys;
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
+
         async print(type) {
             var element = null;
             if (type === 'XP') {

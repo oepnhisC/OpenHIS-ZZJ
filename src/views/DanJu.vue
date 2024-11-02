@@ -33,7 +33,7 @@ export default {
                 { title: '年龄', value: 'fage' },
                 { title: '门诊号', value: 'fno' },
                 { title: '性别', value: 'fgender' },
-                { title: '主要诊断', value: 'fzyzd' },
+                { title: '主要信息', value: 'fzyzd' },
                 { title: '开单人', value: 'fkdr' },
                 { title: '开单时间', value: 'fkdsj' }
             ],
@@ -43,18 +43,16 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['updateDanJuData','updateFzyzd','updateFjzid']),
+        ...mapActions(['updateDanJuData','updateFjzid']),
         ...mapActions(['clearData']),
         async selectRow(item,obj) {
             var fjzid = obj.item.fjzid;
-            var fzyzd = obj.item.fzyzd;
-            
-            console.log(fjzid,fzyzd);
+            var fdjh = obj.item.fdjh;
            
             try {
                 this.loading = true;
                 const response = await this.$axios.post('/zizhuji/danjumingxi', {
-                    'fjzid': fjzid,'fzyzd':fzyzd
+                    'fjzid': fjzid,'fdjh':fdjh
                 });
 
                 if (response.data){
@@ -62,7 +60,6 @@ export default {
                         console.log(response.data.result);
                         this.errmsg = response.data.result;
                         this.updateDanJuData(this.errmsg);
-                        this.updateFzyzd(fzyzd);
                         this.updateFjzid(fjzid);
                         this.errFlag = false;
                         this.$router.replace('/paydetails');

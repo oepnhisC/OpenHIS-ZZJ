@@ -13,7 +13,7 @@
 
       <v-row><v-col align="center" v-if="errFlag" style="color:red;font-size: 16px;" >{{errmsg}}</v-col></v-row>
       <v-row><v-col align="center"  ><v-btn @click="sendData()" size="large">假装已扫码</v-btn> </v-col></v-row>
-
+      
     </v-container>
     
   </div>

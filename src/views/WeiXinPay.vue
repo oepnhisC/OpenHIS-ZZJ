@@ -57,7 +57,7 @@ export default {
             this.$router.replace('/'); 
         },
         async getQRCode(){
-            const response = await this.$axios.post('/zizhuji/wechatpayQRCode', {'fjzid': this.fjzid,'fzyzd':this.fzyzd});
+            const response = await this.$axios.get('/zizhuji/wechatpayQRCode');
             if (response.data){
                 if(response.data.code == 0){
                     var result = response.data.result;
