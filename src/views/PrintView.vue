@@ -26,39 +26,40 @@
                     <v-col  align="center"  >性别：{{fsex}}</v-col>
                     <v-col  align="right">年龄：{{fage}}</v-col>
                 </v-row>
-                <v-row no-gutters>
-                    <v-col  cols='5'>门诊号：{{fmzh}}</v-col>
-                    <v-col  cols='7'>就诊时间：{{fjzsj}}</v-col>
+                <v-row no-gutters style="font-size: 32px;">
+                    <v-col  align="left">门诊号：{{fmzh}}</v-col>
+                    <v-col  align="right">就诊时间：{{fjzsj}}</v-col>
                 </v-row>
-                <v-row no-gutters>
+                <v-row no-gutters style="font-size: 32px;">
                     <v-col align="left">就诊科室：{{fjzks}}</v-col>
-                    <v-col  align="right" >主诊医生：陈医生</v-col>
+                    <v-col  align="right" >主诊医生：{{ fzzys }}</v-col>
                 </v-row>
                 <v-row no-gutters>
-                    <v-col  cols="7">病人类别：特种病门诊</v-col>
-                    <v-col  cols="5">收据号：123456</v-col>
+                    <v-col  cols="7">病人类别：{{ fbrlb }}</v-col>
+                    <v-col  cols="5">收据号：{{fsjh}}</v-col>
                 </v-row>
-                <v-row no-gutters><v-col>收费时间：2021-01-01 10:00:00</v-col></v-row>
+                <v-row no-gutters><v-col>收费时间：{{fsfsj}}</v-col></v-row>
                 <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
                 <v-row no-gutters>
                     <v-col>
-                        <v-row no-gutters><v-col>费用总额：1000.00</v-col></v-row>
-                        <v-row no-gutters><v-col>实收金额：1000.00</v-col></v-row>
-                        <v-row no-gutters><v-col>社保记账：123456</v-col></v-row>
-                        <v-row no-gutters><v-col>记账：123456.11</v-col></v-row>
-                        <v-row no-gutters><v-col>POS：123456.11</v-col></v-row>
-                        <v-row no-gutters><v-col>尾数：-0.01</v-col></v-row>
-                        <v-row no-gutters><v-col>医保刷卡：487.11</v-col></v-row>
-                        <v-row no-gutters><v-col>转账：76.5</v-col></v-row>
-                        <v-row no-gutters><v-col>财政支付：0.00</v-col></v-row>
-                        <v-row no-gutters><v-col>减免优惠：0.00</v-col></v-row>
-                        <v-row no-gutters><v-col>民政补助：0.00</v-col></v-row>
-                        <v-row no-gutters><v-col>减免：0.00</v-col></v-row>
+                        <v-row no-gutters><v-col>费用总额：{{fzfy}}</v-col></v-row>
+                        <v-row no-gutters><v-col>现金支付：{{ fxjzf }}</v-col></v-row>
+                        <v-row no-gutters><v-col>社保记账：{{fsbjz}}</v-col></v-row>
+                        <v-row no-gutters><v-col>记账：{{fjz}}</v-col></v-row>
+                        <v-row no-gutters><v-col>会员账户：{{fhyzh}}</v-col></v-row>
+                        <v-row no-gutters><v-col>POS：{{fPOS}}</v-col></v-row>
+                        <v-row no-gutters><v-col>尾数：{{ fws }}</v-col></v-row>
+                        <v-row no-gutters><v-col>医保刷卡：{{ fybsk }}</v-col></v-row>
+                        <v-row no-gutters><v-col>转账：{{ fzz }}</v-col></v-row>
+                        <v-row no-gutters><v-col>财政支付：{{fczzf}}</v-col></v-row>
+                        <v-row no-gutters><v-col>减免优惠：{{ fjmyh }}</v-col></v-row>
+                        <v-row no-gutters><v-col>民政补助：{{ fmzbz }}</v-col></v-row>
+                        <v-row no-gutters><v-col>减免：{{ fjm }}</v-col></v-row>
                     </v-col>
                     <v-col >
                         <v-row style="height: 100px;"></v-row>
                         <v-row no-gutters><v-col align="center">扫码查看电子票据</v-col></v-row>
-                        <v-row no-gutters><v-col align="center"><vue-qr :text="payurl" style="width: 300px;height: 300px;"></vue-qr></v-col></v-row>
+                        <v-row no-gutters><v-col align="center"><vue-qr :text="furl" style="width: 300px;height: 300px;"></vue-qr></v-col></v-row>
                     </v-col>
                 </v-row>
                 <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
@@ -91,9 +92,9 @@
                     <v-col  align="center"  >性别：{{fsex}}</v-col>
                     <v-col  align="right">年龄：{{fage}}</v-col>
                 </v-row>
-                <v-row no-gutters>
-                    <v-col  cols='5'>门诊号：{{fmzh}}</v-col>
-                    <v-col  cols='7'>就诊时间：{{fjzsj}}</v-col>
+                <v-row no-gutters style="font-size: 32px;">
+                    <v-col  align="left">门诊号：{{fmzh}}</v-col>
+                    <v-col  align="right">就诊时间：{{fjzsj}}</v-col>
                 </v-row>
                 <v-row no-gutters>申请医师：{{fzzys}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
@@ -111,15 +112,15 @@
                 <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
                 <v-row><v-col  align="center" style="font-size: 60px;">影像单</v-col></v-row>
                 <v-row no-gutters>
-                    <v-col  align="left">姓名：测试哥</v-col>
-                    <v-col  align="center"  >性别：女</v-col>
-                    <v-col  align="right">年龄：100岁</v-col>
+                    <v-col  align="left">姓名：{{fname}}</v-col>
+                    <v-col  align="center"  >性别：{{fsex}}</v-col>
+                    <v-col  align="right">年龄：{{fage}}</v-col>
                 </v-row>
-                <v-row no-gutters>
-                    <v-col  cols='5'>门诊号：123456</v-col>
-                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                <v-row no-gutters style="font-size: 32px;">
+                    <v-col  align="left">门诊号：{{fmzh}}</v-col>
+                    <v-col  align="right">就诊时间：{{fjzsj}}</v-col>
                 </v-row>
-                <v-row no-gutters>申请医师：陈医生</v-row>
+                <v-row no-gutters>申请医师：{{fzzys}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
                 <v-row no-gutters>
                     <v-col  align="left">DR</v-col>
@@ -139,15 +140,15 @@
                 <v-row><v-col  align="center" style="font-size: 140px;">卫材领取单</v-col></v-row>
                 <v-row><v-col  align="center" style="font-size: 130px;">此单请交给药房人员！</v-col></v-row>
                 <v-row no-gutters>
-                    <v-col  align="left">姓名：测试哥</v-col>
-                    <v-col  align="center"  >性别：女</v-col>
-                    <v-col  align="right">年龄：100岁</v-col>
+                    <v-col  align="left">姓名：{{fname}}</v-col>
+                    <v-col  align="center"  >性别：{{fsex}}</v-col>
+                    <v-col  align="right">年龄：{{fage}}</v-col>
                 </v-row>
-                <v-row no-gutters>
-                    <v-col  cols='5'>门诊号：123456</v-col>
-                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                <v-row no-gutters style="font-size: 32px;">
+                    <v-col  align="left">门诊号：{{fmzh}}</v-col>
+                    <v-col  align="right">就诊时间：{{fjzsj}}</v-col>
                 </v-row>
-                <v-row no-gutters>申请医师：陈医生</v-row>
+                <v-row no-gutters>申请医师：{{fzzys}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
                 <v-row no-gutters>
                     <v-col  align="left">卫材aaaaaa</v-col>
@@ -164,15 +165,15 @@
                 <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
                 <v-row><v-col  align="center" style="font-size: 60px;">采血指引单</v-col></v-row>
                 <v-row no-gutters>
-                    <v-col  align="left">姓名：测试哥</v-col>
-                    <v-col  align="center"  >性别：女</v-col>
-                    <v-col  align="right">年龄：100岁</v-col>
+                    <v-col  align="left">姓名：{{fname}}</v-col>
+                    <v-col  align="center"  >性别：{{fsex}}</v-col>
+                    <v-col  align="right">年龄：{{fage}}</v-col>
                 </v-row>
-                <v-row no-gutters>
-                    <v-col  cols='5'>门诊号：123456</v-col>
-                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                <v-row no-gutters style="font-size: 32px;">
+                    <v-col  align="left">门诊号：{{fmzh}}</v-col>
+                    <v-col  align="right">就诊时间：{{fjzsj}}</v-col>
                 </v-row>
-                <v-row no-gutters>申请医师：陈医生</v-row>
+                <v-row no-gutters>申请医师：{{fzzys}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
                 <v-row no-gutters>
                     <v-col  align="left">肝功五项</v-col>
@@ -193,15 +194,15 @@
                 <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
                 <v-row><v-col  align="center" style="font-size: 60px;">妇科治疗单</v-col></v-row>
                 <v-row no-gutters>
-                    <v-col  align="left">姓名：测试哥</v-col>
-                    <v-col  align="center"  >性别：女</v-col>
-                    <v-col  align="right">年龄：100岁</v-col>
+                    <v-col  align="left">姓名：{{fname}}</v-col>
+                    <v-col  align="center"  >性别：{{fsex}}</v-col>
+                    <v-col  align="right">年龄：{{fage}}</v-col>
                 </v-row>
-                <v-row no-gutters>
-                    <v-col  cols='5'>门诊号：123456</v-col>
-                    <v-col  cols='7'>就诊时间：2021-01-01</v-col>
+                <v-row no-gutters style="font-size: 32px;">
+                    <v-col  align="left">门诊号：{{fmzh}}</v-col>
+                    <v-col  align="right">就诊时间：{{fjzsj}}</v-col>
                 </v-row>
-                <v-row no-gutters>申请医师：陈医生</v-row>
+                <v-row no-gutters>申请医师：{{fzzys}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
                 <v-row no-gutters>
                     <v-col  align="left">肝功五项</v-col>
@@ -260,14 +261,7 @@ export default {
     },
     data() {
         return {
-            payurl: 'www.baidu.com',
-            feibie:[
-                {name:'住院费',money:713},
-                {name:'门诊费',money:361},
-                {name:'药费',money:0.5},
-                {name:'治疗费',money:36},
-                {name:'检查费',money:78},
-            ],
+
             fname: '',
             fage: 0,
             fjzsj: '',
@@ -277,19 +271,46 @@ export default {
             fsjh: '',
             fzzys: '',
             fjzks: '',
+            fbrlb: '',
+
+            fzfy: 0,
+
+            fxjzf:0,
+            fsbjz:0,
+            fjz:0,
+            fhyzh:0,
+            fPOS:0,
+            fws:0,
+            fybsk:0,
+            fzz:0,
+            fczzf:0,
+            fjmyh:0,
+            fmzbz:0,
+            fjm:0,
+
+            furl:'',
+
+            feibie:[
+                {ffb:'住院费',fje:0},
+                {ffb:'门诊费',fje:0},
+                {ffb:'药费',fje:0},
+                {ffb:'治疗费',fje:0},
+                {ffb:'检查费',fje:0},
+            ],
+
         }
     },
     mounted() {
-       this.getInfo();
+       this.getHeadInfo();
+       this.getFeiYong();
     },
     computed: {
        feibieArr: function () {
            let feibieS = [];
            for(let i=0;i<this.feibie.length;i++){
-            feibieS.push(this.feibie[i].name);
-            feibieS.push(this.feibie[i].money);
+            feibieS.push(this.feibie[i].ffb);
+            feibieS.push(this.feibie[i].fje);
            }
-           console.log(feibieS);
            return feibieS;
         }
     },
@@ -300,11 +321,11 @@ export default {
             this.clearData();
             this.$router.replace('/'); 
         },
-        async getInfo(){
-            const response = await this.$axios.get('/zizhuji/printInfo');
+        // 小票头部信息
+        async getHeadInfo(){
+            const response = await this.$axios.get('/zizhuji/printInfoHeader');
             if (response.data){
                 if(response.data.code == 0){
-                    console.log(response.data.result[0]);
                     let headerData = response.data.result[0]
                     this.fname = headerData.fname;
                     this.fage = headerData.fage;
@@ -314,6 +335,8 @@ export default {
                     this.fsfsj = headerData.fsfsj;
                     this.fsjh = headerData.fsjh;
                     this.fzzys = headerData.fzzys;
+                    this.fjzks = headerData.fjzks;
+                    this.fbrlb = headerData.fbrlb;
                 }else{
                     console.log(response.data);
                     this.errFlag = true;
@@ -322,6 +345,41 @@ export default {
             }
         },
 
+        // 收费凭据
+        async getFeiYong(){
+            const response = await this.$axios.get('/zizhuji/feiYong');
+            if (response.data){
+                if(response.data.code == 0){
+                    let result = response.data;
+                    console.log(result);
+                    this.fzfy = result.fzfy;
+                    let fzff = result.fzffs[0];
+                    this.fPOS = fzff.fPOS;
+                    this.fczzf = fzff.fczzf;
+                    this.fhyzh = fzff.fhyzh;
+                    this.fjmj = fzff.fjmj;
+                    this.fjmyh = fzff.fjmyh;
+                    this.fjz = fzff.fjz;
+                    this.fmzbz = fzff.fmzbz;
+                    this.fsbjz = fzff.fsbjz;
+                    this.fws = fzff.fws;
+                    this.fxjzf = fzff.fxjzf;
+                    this.fybsk = fzff.fybsk;
+                    this.fzz = fzff.fzz;
+                    this.furl = result.furl;
+
+                    this.feibie = result.ffbs;
+                    
+
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
+
+        // 打印小票
         async print(type) {
             var element = null;
             if (type === 'XP') {
