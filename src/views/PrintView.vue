@@ -7,7 +7,7 @@
                 <v-col align="right"><v-btn size="x-large" style="margin-top: 8px;" @click="quit()">退出</v-btn></v-col>
             </v-row>
             <v-row><v-col align="center" style="font-size: 20px;">自动打印中，请稍候...</v-col></v-row>
-            <!-- <v-row><v-progress-linear indeterminate ></v-progress-linear></v-row> -->
+            <v-row><v-progress-linear indeterminate ></v-progress-linear></v-row>
             <v-row>
                 <v-col align="center"><v-btn size="x-large" @click="print('XP')">打印小票</v-btn></v-col>
                 <v-col align="center"><v-btn size="x-large" @click="print('ZYD')">打印指引单</v-btn></v-col>
@@ -97,13 +97,24 @@
                     <v-col  align="right">就诊时间：{{fjzsj}}</v-col>
                 </v-row>
                 <v-row no-gutters>申请医师：{{fzzys}}</v-row>
+                <v-row no-gutters>诊断：{{fzyzd}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
-                <v-row no-gutters>
-                    <v-col  align="left">尿液分析+镜检</v-col>
-                    <v-col  align="right">总量：1</v-col>
+                <v-row no-gutters v-for="(item) in zhiyindan" style="font-size:30px;">
+                    <v-row no-gutters>
+                        <v-col  align="left">{{ item.fyznr }}</v-col>
+                        <v-col  align="right">总量：{{ item.fzl }} {{ item.fbbbw }}</v-col>
+                    </v-row>
+                    <v-row no-gutters style="width:100%">
+                        <v-col  align="left">{{ item.fcjg }}</v-col>
+                        <v-col  align="right">{{ item.fyszt }}</v-col>
+                    </v-row>
+                    <v-row no-gutters style="width:100%">
+                        <v-col  align="left">{{ item.fjcbw }}</v-col>
+                        <v-col align="right">{{ item.fwz }}</v-col>
+                    </v-row>
+                    <v-row no-gutters style="width:100%">{{ item.jj }}</v-row>
+                    <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
                 </v-row>
-                <v-row no-gutters ><v-col align="right">门诊楼二层检验科</v-col></v-row>
-                <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
             </v-container>
         </div> 
 
@@ -121,16 +132,24 @@
                     <v-col  align="right">就诊时间：{{fjzsj}}</v-col>
                 </v-row>
                 <v-row no-gutters>申请医师：{{fzzys}}</v-row>
+                <v-row no-gutters>诊断：{{fzyzd}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
-                <v-row no-gutters>
-                    <v-col  align="left">DR</v-col>
-                    <v-col  align="right">总量：1 胸部DR</v-col>
+                <v-row no-gutters v-for="(item) in yingxiangdan" style="font-size:30px;">
+                    <v-row no-gutters>
+                        <v-col  align="left">{{ item.fyznr }}</v-col>
+                        <v-col  align="right">总量：{{ item.fzl }} {{ item.fbbbw }}</v-col>
+                    </v-row>
+                    <v-row no-gutters style="width:100%">
+                        <v-col  align="left">{{ item.fcjg }}</v-col>
+                        <v-col  align="right">{{ item.fyszt }}</v-col>
+                    </v-row>
+                    <v-row no-gutters style="width:100%">
+                        <v-col  align="left">{{ item.fjcbw }}</v-col>
+                        <v-col align="right">{{ item.fwz }}</v-col>
+                    </v-row>
+                    <v-row no-gutters style="width:100%">{{ item.jj }}</v-row>
+                    <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
                 </v-row>
-                <v-row no-gutters >
-                    <v-col align="left">正位</v-col>
-                    <v-col align="right">门诊楼二层检验科</v-col>
-                </v-row>
-                <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
             </v-container>
         </div> 
 
@@ -298,11 +317,18 @@ export default {
                 {ffb:'检查费',fje:0},
             ],
 
+            zhiyindan:[],
+            yingxiangdan:[],
+            fzyzd:'',
+
         }
     },
     mounted() {
        this.getHeadInfo();
        this.getFeiYong();
+       this.getZhiYinDan();
+       this.getYingXiangDan();
+       this.getZhuYaoZhenDuan();
     },
     computed: {
        feibieArr: function () {
@@ -378,6 +404,58 @@ export default {
                 }
             }
         },
+
+        // 指引单信息
+        async getZhiYinDan(){
+            const response = await this.$axios.get('/zizhuji/zhiyindan');
+            if (response.data){
+                if(response.data.code == 0){
+                    let result = response.data;
+                    console.log(result);
+                    this.zhiyindan =result.result;
+
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
+
+        // 影像单信息
+        async getYingXiangDan(){
+            const response = await this.$axios.get('/zizhuji/yingxiangdan');
+            if (response.data){
+                if(response.data.code == 0){
+                    let result = response.data;
+                    console.log(result);
+                    this.yingxiangdan =result.result;
+
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
+
+        // 主要诊断
+        async getZhuYaoZhenDuan(){
+            const response = await this.$axios.get('/zizhuji/zhuyaozhenduan');
+            if (response.data){
+                if(response.data.code == 0){
+                    let result = response.data;
+                    console.log(result);
+                    this.fzyzd =result.result;
+
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
+
 
         // 打印小票
         async print(type) {
