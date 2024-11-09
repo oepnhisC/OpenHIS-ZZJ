@@ -97,7 +97,7 @@
                     <v-col  align="right">就诊时间：{{fjzsj}}</v-col>
                 </v-row>
                 <v-row no-gutters>申请医师：{{fzzys}}</v-row>
-                <v-row no-gutters>诊断：{{fzyzd}}</v-row>
+                <!-- <v-row no-gutters>诊断：{{fzyzd}}</v-row> -->
                 <v-row no-gutters style="height: 20px;"></v-row>
                 <v-row no-gutters v-for="(item) in zhiyindan" style="font-size:30px;">
                     <v-row no-gutters>
@@ -169,13 +169,11 @@
                 </v-row>
                 <v-row no-gutters>申请医师：{{fzzys}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
-                <v-row no-gutters>
-                    <v-col  align="left">卫材aaaaaa</v-col>
+                <v-row no-gutters v-for="(item) in weicaidan">
+                    <v-row no-gutters style="width:100%"><v-col  align="left">{{ item.fyznr }}</v-col></v-row>
+                    <v-row no-gutters style="width:100%"><v-col align="right">总量：{{ item.fzl }}</v-col></v-row>
+                    <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
                 </v-row>
-                <v-row no-gutters >
-                    <v-col align="right">数量：2</v-col>
-                </v-row>
-                <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
             </v-container>
         </div>
 
@@ -194,17 +192,22 @@
                 </v-row>
                 <v-row no-gutters>申请医师：{{fzzys}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
-                <v-row no-gutters>
-                    <v-col  align="left">肝功五项</v-col>
-                    <v-col  align="right">总量：1 </v-col>
+                <v-row no-gutters v-for="(item) in caixiedan" style="font-size:30px;">
+                    <v-row no-gutters>
+                        <v-col  align="left">{{ item.fyznr }}</v-col>
+                        <v-col  align="right">总量：{{ item.fzl }} {{ item.fbbbw }}</v-col>
+                    </v-row>
+                    <v-row no-gutters style="width:100%">
+                        <v-col  align="left">{{ item.fcjg }}</v-col>
+                        <v-col  align="right">{{ item.fyszt }}</v-col>
+                    </v-row>
+                    <v-row no-gutters style="width:100%">
+                        <v-col  align="left">{{ item.fjcbw }}</v-col>
+                        <v-col align="right">{{ item.fwz }}</v-col>
+                    </v-row>
+                    <v-row no-gutters style="width:100%">{{ item.jj }}</v-row>
+                    <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
                 </v-row>
-                <v-row no-gutters>
-                    <v-col  align="left">生化管（红/黄）</v-col>
-                </v-row>
-                <v-row no-gutters >
-                    <v-col align="right">综合楼一层输液区</v-col>
-                </v-row>
-                <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
             </v-container>
         </div> 
 
@@ -223,14 +226,15 @@
                 </v-row>
                 <v-row no-gutters>申请医师：{{fzzys}}</v-row>
                 <v-row no-gutters style="height: 20px;"></v-row>
-                <v-row no-gutters>
-                    <v-col  align="left">肝功五项</v-col>
-                    <v-col  align="right">总量：1 </v-col>
+                <v-row no-gutters v-for="(item) in fukedan" style="font-size:30px;">
+                    <v-row no-gutters style="width:100%">
+                        <v-col  align="left">{{ item.fyznr }}</v-col>
+                        <v-col  align="right">总量：{{ item.fzl }} </v-col>
+                    </v-row>
+                    <v-row no-gutters ><v-col align="right">{{ item.fyszt }}</v-col></v-row>
+                    <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
                 </v-row>
-                <v-row no-gutters >
-                    <v-col align="right">嘱托</v-col>
-                </v-row>
-                <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
+                <v-row no-gutters style="height: 20px;"></v-row>
                 <v-row no-gutters style="padding-left: 30px;padding-right: 30px;">
                     <div v-for="(row, index) in 14" :key="index" class="row">
                         <div v-for="(col, colIndex) in 2" :key="colIndex" class="column">
@@ -320,7 +324,9 @@ export default {
             zhiyindan:[],
             yingxiangdan:[],
             fzyzd:'',
-
+            weicaidan:[],
+            caixiedan:[],
+            fukedan:[],
         }
     },
     mounted() {
@@ -329,6 +335,9 @@ export default {
        this.getZhiYinDan();
        this.getYingXiangDan();
        this.getZhuYaoZhenDuan();
+       this.getWeiCaiDan();
+       this.getCaixieDan();
+       this.getFuKeDan();
     },
     computed: {
        feibieArr: function () {
@@ -456,6 +465,56 @@ export default {
             }
         },
 
+
+        // 卫材单信息
+        async getWeiCaiDan(){
+            const response = await this.$axios.get('/zizhuji/weicaidan');
+            if (response.data){
+                if(response.data.code == 0){
+                    let result = response.data;
+                    console.log(result);
+                    this.weicaidan =result.result;
+
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
+
+        // 采血单信息
+        async getCaixieDan(){
+            const response = await this.$axios.get('/zizhuji/caixiedan');
+            if (response.data){
+                if(response.data.code == 0){
+                    let result = response.data;
+                    console.log(result);
+                    this.caixiedan =result.result;
+
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
+
+        async getFuKeDan(){
+            const response = await this.$axios.get('/zizhuji/fukedan');
+            if (response.data){
+                if(response.data.code == 0){
+                    let result = response.data;
+                    console.log(result);
+                    this.fukedan =result.result;
+
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
 
         // 打印小票
         async print(type) {
