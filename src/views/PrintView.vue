@@ -16,6 +16,7 @@
                 <v-col align="center"><v-btn size="x-large" @click="print('CXZYD')">打印采血指引单</v-btn></v-col>
                 <v-col align="center"><v-btn size="x-large" @click="print('FKZLD')">打印妇科治疗单</v-btn></v-col>
                 <v-col align="center"><v-btn size="x-large" @click="print('JY')">打印检验条码</v-btn></v-col>
+                <v-col align="center"><v-btn size="x-large" @click="console.log(this.$refs.jianyan)">查看检验条码</v-btn></v-col>
             </v-row>
         </v-container>
         <div ref="xiaopiao" class="xiaopiao" > 
@@ -245,25 +246,25 @@
         </div> 
 
 
-        <div ref="jianyan"  style="width:1100px;height:580px;display: inline-block;vertical-align:top;overflow:hidden;">
+        <div ref="jianyan" v-for="(item, index) in jianyantiaoma" class="tiaoma">
             <v-container style="font-size: 48px;padding: 10px">
                 <v-row no-gutters>
-                    <v-col cols="5" align="center" >0000259533    </v-col>
-                    <v-col cols="7" align="center">2024-10-28 08:50:07</v-col>
+                    <v-col cols="5" align="center" >{{fmzh}}</v-col>
+                    <v-col cols="7" align="center">{{fjzsj}}</v-col>
                 </v-row>
                 <v-row no-gutters>
                     <v-col cols="8" align="right" style="height: 280px;">
-                        <JianYanTiaoMa :value="'24102813000021'"/>
+                        <JianYanTiaoMa :value="item.ftm"/>
                     </v-col>
-                    <v-col cols="4">无菌密闭容器（金鱼）</v-col>
+                    <v-col cols="4">{{ item.fcjg + ' ' + item.fys }}</v-col>
                 </v-row>
                 <v-row no-gutters >
-                    <v-col cols="4" align="center">梁X珍</v-col>
-                    <v-col cols="1">女</v-col>
-                    <v-col cols="2">33岁</v-col>
-                    <v-col cols="5">妇科门诊</v-col>
+                    <v-col cols="4" align="center">{{fname}}</v-col>
+                    <v-col cols="1">{{fsex}}</v-col>
+                    <v-col cols="2">{{fage}}</v-col>
+                    <v-col cols="5">{{fjzks}}</v-col>
                 </v-row>
-                <v-row no-gutters >血常规五项、肝功三项、肾功四项、尿常规、尿蛋白、尿酸、血脂、血压、体温</v-row>
+                <v-row no-gutters >{{ item.fyznr }}</v-row>
             </v-container>
         </div>
     </div>
@@ -327,6 +328,7 @@ export default {
             weicaidan:[],
             caixiedan:[],
             fukedan:[],
+            jianyantiaoma:[],
         }
     },
     mounted() {
@@ -338,6 +340,8 @@ export default {
        this.getWeiCaiDan();
        this.getCaixieDan();
        this.getFuKeDan();
+       this.getJianYanTiaoMa();
+       
     },
     computed: {
        feibieArr: function () {
@@ -500,6 +504,7 @@ export default {
             }
         },
 
+        // 妇科治疗单信息
         async getFuKeDan(){
             const response = await this.$axios.get('/zizhuji/fukedan');
             if (response.data){
@@ -515,6 +520,24 @@ export default {
                 }
             }
         },
+
+        // 检验条码
+        async getJianYanTiaoMa(){
+            const response = await this.$axios.get('/zizhuji/jianyantiaoma');
+            if (response.data){
+                if(response.data.code == 0){
+                    let result = response.data;
+                    console.log(result);
+                    this.jianyantiaoma =result.result;
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
+
+
 
         // 打印小票
         async print(type) {
@@ -536,14 +559,29 @@ export default {
             }else {
                 return;
             }
+            if(Array.isArray(element)){
+                for(let i=0;i<element.length;i++){
+                    console.log(element[i]);
+                    await this.printSingle(element[i],type);
+                }
+            } else {
+                console.log(element);
+                await this.printSingle(element,type);
+            }
+            // const canvas = await  html2canvas(element);
+            // const dataURL = canvas.toDataURL('image/jpg');
             
+            // const response = await this.$axios.post('http://127.0.0.1:15588/print', 
+            //     { image: dataURL,type:type } );
+            // console.log(response.data);
+        },
+        async printSingle(element,type) {
             const canvas = await  html2canvas(element);
             const dataURL = canvas.toDataURL('image/jpg');
-            
             const response = await this.$axios.post('http://127.0.0.1:15588/print', 
                 { image: dataURL,type:type } );
             console.log(response.data);
-        },
+        }
         
 
     }
@@ -563,5 +601,9 @@ export default {
 .column {
   border: 2.5px solid black;
   flex-basis: 50%;
+}
+
+.tiaoma{
+    width:1100px;height:580px;display: inline-block;vertical-align:top;overflow:hidden;
 }
 </style>
