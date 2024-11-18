@@ -16,7 +16,7 @@
                 <v-col align="center"><v-btn size="x-large" @click="print('CXZYD')">打印采血指引单</v-btn></v-col>
                 <v-col align="center"><v-btn size="x-large" @click="print('FKZLD')">打印妇科治疗单</v-btn></v-col>
                 <v-col align="center"><v-btn size="x-large" @click="print('JY')">打印检验条码</v-btn></v-col>
-                <v-col align="center"><v-btn size="x-large" @click="console.log(this.$refs.jianyan)">查看检验条码</v-btn></v-col>
+                <v-col align="center"><v-btn size="x-large" @click="printFaPiao()">打印发票</v-btn></v-col>
             </v-row>
         </v-container>
         <div ref="xiaopiao" class="xiaopiao" > 
@@ -329,6 +329,7 @@ export default {
             caixiedan:[],
             fukedan:[],
             jianyantiaoma:[],
+            fapiao:[],
         }
     },
     mounted() {
@@ -341,6 +342,7 @@ export default {
        this.getCaixieDan();
        this.getFuKeDan();
        this.getJianYanTiaoMa();
+       this.getFaPiao();
        
     },
     computed: {
@@ -537,6 +539,22 @@ export default {
             }
         },
 
+        // 发票
+        async getFaPiao(){
+            const response = await this.$axios.get('/zizhuji/fapiao');
+            if (response.data){
+                if(response.data.code == 0){
+                    let result = response.data;
+                    console.log(result);
+                    this.fapiao =result.result;
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
+
 
 
         // 打印小票
@@ -568,12 +586,7 @@ export default {
                 console.log(element);
                 await this.printSingle(element,type);
             }
-            // const canvas = await  html2canvas(element);
-            // const dataURL = canvas.toDataURL('image/jpg');
-            
-            // const response = await this.$axios.post('http://127.0.0.1:15588/print', 
-            //     { image: dataURL,type:type } );
-            // console.log(response.data);
+       
         },
         async printSingle(element,type) {
             const canvas = await  html2canvas(element);
@@ -581,8 +594,15 @@ export default {
             const response = await this.$axios.post('http://127.0.0.1:15588/print', 
                 { image: dataURL,type:type } );
             console.log(response.data);
+        },
+        // 打印发票
+        async printFaPiao() {
+            for(let i=0;i<this.fapiao.length;i++){
+                const response = await this.$axios.post('http://127.0.0.1:15588/print', 
+                    { image: this.fapiao[i],type:'FP' } );
+            console.log(response.data);
+            }
         }
-        
 
     }
 };
