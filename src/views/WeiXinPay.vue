@@ -10,11 +10,14 @@
             <v-row><v-col align="center" style="font-size: 20px;">{{ countdown }}秒后自动关闭，请及时支付，超时后订单将自动取消。</v-col></v-row>
             <v-row><v-col align="center"><vue-qr :text="payurl" size="250"></vue-qr></v-col></v-row>
             <v-row><v-col align="center" v-if="succeedFlag" style="color:green;font-size: 16px;" >{{successMsg}}</v-col></v-row>
+            <v-row><v-col align="center" ><v-btn size="x-large" @click="jiezhang()" >本地结账</v-btn></v-col></v-row>
             <v-row><v-col align="center" ><v-btn size="x-large" @click="succeed()" >假装支付成功</v-btn></v-col></v-row>
+            <v-row><v-col><v-alert density="compact" title="失败" type="error"  v-show="errFlag">{{ errmsg }}</v-alert></v-col></v-row>
+            <v-row><v-col><v-alert density="compact"  title="成功" type="success"  v-show="succeedFlag">{{ successMsg }}</v-alert></v-col></v-row>
         </v-container>
         
-
-    </div>
+        
+    </div>    
 </template>
 
 <script>
@@ -28,7 +31,7 @@ export default {
 
     data() {
         return {
-            errmsg: '',
+            errmsg: '操作失败',
             errFlag: false,
             money: 0,
             payurl: '',
@@ -37,6 +40,7 @@ export default {
             timer: null,
             countdown: 120,
             timer2: null,
+            
         }
     },
     mounted() { 
@@ -73,6 +77,23 @@ export default {
                 }
             }
         },
+
+        // 本地结账
+        async jiezhang(){
+            const response = await this.$axios.get('/zizhuji/jiezhang');
+            if (response.data){
+                if(response.data.code == 0){
+                    let result = response.data;
+                    console.log(result);
+                    this.fapiao =result.result;
+                }else{
+                    console.log(response.data);
+                    this.errFlag = true;
+                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                }
+            }
+        },
+
         succeed(){
             this.succeedFlag = true;
             clearInterval(this.timer); // 支付成功后清除定时器

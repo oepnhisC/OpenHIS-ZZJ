@@ -12,7 +12,7 @@
                 <!-- <v-col align="center"><v-btn size="x-large" color="info">支付宝支付</v-btn></v-col> -->
             </v-row>
         </v-container>
-        <v-data-table :headers="headers" :items="danJuData" item-key="name"  hide-default-footer></v-data-table>
+        <v-data-table :headers="headers" :items="danJuData" item-key="name"  hide-default-footer items-per-page="999"></v-data-table>
     </div>
 </template>
 

@@ -40,7 +40,21 @@ export default {
             errmsg: '',
             errFlag: false,
             loading: false,
+            firstLoad: false,
+            danJuList: [],
         }
+    },
+    mounted() {
+        if(this.firstLoad == false){
+            this.danJuList = this.responseData;
+            this.firstLoad = true;
+        }
+    },
+    //重新回到此页面时，重新获取单据信息
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            if(vm.firstLoad) {vm.danjuAgain();}
+        });
     },
     methods: {
         ...mapActions(['updateDanJuData','updateFjzid']),
@@ -80,7 +94,30 @@ export default {
         quit() {
             this.clearData();
             this.$router.replace('/');
-        }
+        },
+        //再次获取单据信息
+        async danjuAgain() {
+            try {
+                this.loading = true;
+                const response = await this.$axios.get('/zizhuji/danJuAgain');
+                if (response.data){
+                    if(response.data.code == 0){
+                        console.log(response.data.result);
+                        this.danJuList = response.data.result;
+                        this.errFlag = false;
+                    }else{
+                        console.log(response.data);
+                        this.errFlag = true;
+                        this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    }
+                }
+                this.loading = false;
+            } catch (error) {
+                this.errmsg = '网络请求失败，请联系管理员';
+                console.error('请求失败:', error);
+                this.loading = false;
+            }
+        },
 
 
     },
