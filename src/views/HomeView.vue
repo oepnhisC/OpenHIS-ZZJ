@@ -10,8 +10,8 @@
       </v-row>
       
       <v-row><v-progress-linear v-if="loading" indeterminate></v-progress-linear></v-row>
-
-      <v-row><v-col align="center" v-if="errFlag" style="color:red;font-size: 16px;" >{{errmsg}}</v-col></v-row>
+      <v-row><v-col><v-alert density="compact" title="失败" type="error"  v-show="errFlag">{{ errmsg }}</v-alert></v-col></v-row>
+      <!-- <v-row><v-col align="center" v-if="errFlag" style="color:red;font-size: 16px;" >{{errmsg}}</v-col></v-row> -->
       <v-row><v-col align="center"  ><v-btn @click="sendData()" size="large">假装已扫码</v-btn> </v-col></v-row>
       
     </v-container>
@@ -62,7 +62,7 @@ export default {
           }else{
             console.log(response.data);
             this.errFlag = true;
-            this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+            this.errmsg = response.data.result ;
           }
         }
         this.loading = false;

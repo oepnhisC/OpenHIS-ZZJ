@@ -84,7 +84,7 @@
             </v-container>
         </div>
 
-        <div ref="zhiyindan" class="xiaopiao" > 
+        <div ref="zhiyindan" class="xiaopiao" v-show="zhiyindanFlag"> 
             <v-container  style="font-size:40px;padding-left: 40px;" >
                 <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row>
                 <v-row><v-col  align="center" style="font-size: 60px;">指引单</v-col></v-row>
@@ -119,7 +119,7 @@
             </v-container>
         </div> 
 
-        <div ref="yingxiangdan" class="xiaopiao" > 
+        <div ref="yingxiangdan" class="xiaopiao" v-show="yingxiangdanFlag"> 
             <v-container  style="font-size:40px;padding-left: 40px;" >
                 <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
                 <v-row><v-col  align="center" style="font-size: 60px;">影像单</v-col></v-row>
@@ -154,7 +154,7 @@
             </v-container>
         </div> 
 
-        <div ref="weicai" class="xiaopiao" > 
+        <div ref="weicai" class="xiaopiao" v-show="weicaidanFlag"> 
             <v-container  style="font-size:40px;padding-left: 40px;" >
                 <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
                 <v-row><v-col  align="center" style="font-size: 140px;">卫材领取单</v-col></v-row>
@@ -178,7 +178,7 @@
             </v-container>
         </div>
 
-        <div ref="caixiedan" class="xiaopiao" > 
+        <div ref="caixiedan" class="xiaopiao" v-show="caixiedanFlag"> 
             <v-container  style="font-size:40px;padding-left: 40px;" >
                 <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
                 <v-row><v-col  align="center" style="font-size: 60px;">采血指引单</v-col></v-row>
@@ -212,7 +212,7 @@
             </v-container>
         </div> 
 
-        <div ref="fukezhiliao" class="xiaopiao" > 
+        <div ref="fukezhiliao" class="xiaopiao" v-show="fukedanFlag"> 
             <v-container  style="font-size:40px;padding-left: 40px;" >
                 <!-- <v-row no-gutters><hr style="border:1px solid #000000;width: 100%;" /></v-row> -->
                 <v-row><v-col  align="center" style="font-size: 60px;">妇科治疗单</v-col></v-row>
@@ -246,7 +246,7 @@
         </div> 
 
 
-        <div ref="jianyan" v-for="(item, index) in jianyantiaoma" class="tiaoma">
+        <div ref="jianyan" v-for="(item, index) in jianyantiaoma" class="tiaoma" v-show="jianyantiaomaFlag">
             <v-container style="font-size: 48px;padding: 10px">
                 <v-row no-gutters>
                     <v-col cols="5" align="center" >{{fmzh}}</v-col>
@@ -330,6 +330,17 @@ export default {
             fukedan:[],
             jianyantiaoma:[],
             fapiao:[],
+
+            zhiyindanFlag:false,
+            yingxiangdanFlag:false,
+            weicaidanFlag:false,
+            caixiedanFlag:false,
+            fukedanFlag:false,
+            jianyantiaomaFlag:false,
+            fapiaoFlag:false,
+
+
+
         }
     },
     mounted() {
@@ -428,8 +439,9 @@ export default {
                     let result = response.data;
                     console.log(result);
                     this.zhiyindan =result.result;
-
+                    this.zhiyindanFlag = true;
                 }else{
+                    this.zhiyindanFlag = false;
                     console.log(response.data);
                     this.errFlag = true;
                     this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
@@ -445,8 +457,9 @@ export default {
                     let result = response.data;
                     console.log(result);
                     this.yingxiangdan =result.result;
-
+                    this.yingxiangdanFlag = true;
                 }else{
+                    this.yingxiangdanFlag = false;
                     console.log(response.data);
                     this.errFlag = true;
                     this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
@@ -480,8 +493,9 @@ export default {
                     let result = response.data;
                     console.log(result);
                     this.weicaidan =result.result;
-
+                    this.weicaidanFlag = true;
                 }else{
+                    this.weicaidanFlag = false;
                     console.log(response.data);
                     this.errFlag = true;
                     this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
@@ -497,8 +511,9 @@ export default {
                     let result = response.data;
                     console.log(result);
                     this.caixiedan =result.result;
-
+                    this.caixiedanFlag = true;
                 }else{
+                    this.caixiedanFlag = false;
                     console.log(response.data);
                     this.errFlag = true;
                     this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
@@ -514,8 +529,9 @@ export default {
                     let result = response.data;
                     console.log(result);
                     this.fukedan =result.result;
-
+                    this.fukedanFlag = true;
                 }else{
+                    this.fukedanFlag = false;
                     console.log(response.data);
                     this.errFlag = true;
                     this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
@@ -531,7 +547,9 @@ export default {
                     let result = response.data;
                     console.log(result);
                     this.jianyantiaoma =result.result;
+                    this.jianyantiaomaFlag = true;
                 }else{
+                    this.jianyantiaomaFlag = false;
                     console.log(response.data);
                     this.errFlag = true;
                     this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';

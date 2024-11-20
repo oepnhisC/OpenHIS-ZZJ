@@ -9,7 +9,7 @@
             <v-row><v-col align="center" style="font-size: 30px;">金额：{{money}}元</v-col></v-row>
             <v-row><v-col align="center" style="font-size: 20px;">{{ countdown }}秒后自动关闭，请及时支付，超时后订单将自动取消。</v-col></v-row>
             <v-row><v-col align="center"><vue-qr :text="payurl" size="250"></vue-qr></v-col></v-row>
-            <v-row><v-col align="center" v-if="succeedFlag" style="color:green;font-size: 16px;" >{{successMsg}}</v-col></v-row>
+            <!-- <v-row><v-col align="center" v-if="succeedFlag" style="color:green;font-size: 16px;" >{{successMsg}}</v-col></v-row> -->
             <v-row><v-col align="center" ><v-btn size="x-large" @click="jiezhang()" >本地结账</v-btn></v-col></v-row>
             <v-row><v-col align="center" ><v-btn size="x-large" @click="succeed()" >假装支付成功</v-btn></v-col></v-row>
             <v-row><v-col><v-alert density="compact" title="失败" type="error"  v-show="errFlag">{{ errmsg }}</v-alert></v-col></v-row>
@@ -60,6 +60,8 @@ export default {
             this.clearData();
             this.$router.replace('/'); 
         },
+
+        // 获取微信支付二维码
         async getQRCode(){
             const response = await this.$axios.get('/zizhuji/wechatpayQRCode');
             if (response.data){
@@ -85,11 +87,12 @@ export default {
                 if(response.data.code == 0){
                     let result = response.data;
                     console.log(result);
-                    this.fapiao =result.result;
+                    this.succeed();
                 }else{
+
                     console.log(response.data);
                     this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    this.errmsg = response.data.result ;
                 }
             }
         },

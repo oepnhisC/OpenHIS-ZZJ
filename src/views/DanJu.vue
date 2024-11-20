@@ -7,10 +7,12 @@
                 <v-col align="right"><v-btn  size="x-large" style="margin-top: 8px;" @click="quit()">退出</v-btn></v-col>
             </v-row>
             <v-row><v-col align="center" style="font-size: 30px;">点击对应单据进入支付详情</v-col></v-row>
+            <v-row><v-col><v-alert density="compact" title="失败" type="error"  v-show="errFlag">{{ errmsg }}</v-alert></v-col></v-row>
         </v-container>
         <v-data-table :headers="headers" :items="responseData" 
         hide-default-footer @click:row="selectRow"></v-data-table>
         <!-- show-select  select-strategy="single" item-value="fzyzd"  -->
+        
         <div style="width: 100%;height: 100%;background-color: rgba(255, 255, 255, 0.5);">
             <v-progress-circular indeterminate :size="77"  v-if="loading" style="top:35%;left:45%;position:fixed;"></v-progress-circular>
         </div>
@@ -59,6 +61,9 @@ export default {
     methods: {
         ...mapActions(['updateDanJuData','updateFjzid']),
         ...mapActions(['clearData']),
+
+
+        // 选择单据
         async selectRow(item,obj) {
             var fjzid = obj.item.fjzid;
             var fdjh = obj.item.fdjh;
@@ -80,7 +85,7 @@ export default {
                     }else{
                         console.log(response.data);
                         this.errFlag = true;
-                        this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                        this.errmsg = response.data.result ;
                     }
                 }
                 this.loading = false;
@@ -106,9 +111,10 @@ export default {
                         this.danJuList = response.data.result;
                         this.errFlag = false;
                     }else{
+                        this.danJuList = [];
                         console.log(response.data);
                         this.errFlag = true;
-                        this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                        this.errmsg = response.data.result ;
                     }
                 }
                 this.loading = false;
