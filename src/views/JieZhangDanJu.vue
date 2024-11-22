@@ -3,10 +3,10 @@
         <v-container>
             <v-row>
                 <v-col align="left" ><v-btn size="x-large" style="margin-top: 8px;" @click="$router.replace('/xuangongneng')">返回</v-btn></v-col>
-                <v-col align="center" style="font-size: 40px;font-weight: bold;">未支付单据</v-col>
+                <v-col align="center" style="font-size: 40px;font-weight: bold;">已缴费单据</v-col>
                 <v-col align="right"><v-btn  size="x-large" style="margin-top: 8px;" @click="this.$router.replace('/');">退出</v-btn></v-col>
             </v-row>
-            <v-row><v-col align="center" style="font-size: 30px;">点击对应单据进入支付详情</v-col></v-row>
+            <v-row><v-col align="center" style="font-size: 30px;">点击对应单据进入打印页面</v-col></v-row>
             <v-row><v-col><v-alert density="compact" title="失败" type="error"  v-show="errFlag">{{ errmsg }}</v-alert></v-col></v-row>
         </v-container>
         <v-data-table :headers="headers" :items="danJuList"   hide-default-footer @click:row="selectRow"></v-data-table>
@@ -28,9 +28,9 @@ export default {
             headers: [
                 { title: '姓名', value: 'fname' },
                 { title: '年龄', value: 'fage' },
-                { title: '门诊号', value: 'fno' },
-                { title: '性别', value: 'fgender' },
-                { title: '主要信息', value: 'fzyzd' },
+                { title: '门诊号', value: 'fmzh' },
+                { title: '性别', value: 'fsex' },
+                { title: '总额', value: 'fze' },
                 { title: '开单人', value: 'fkdr' },
                 { title: '开单时间', value: 'fkdsj' }
             ],
@@ -48,9 +48,13 @@ export default {
 
         // 选择单据
         async selectRow(item,obj) {
-            var fjzid = obj.item.fjzid;
-            var fdjh = obj.item.fdjh;
-            this.$router.replace({path: '/paydetails',query: { fjzid: fjzid,fdjh:fdjh }});
+            console.log(obj.item);
+            let fjiezhangID = obj.item.fjiezhangID;
+            this.$router.replace({path: '/printview',query: { fjiezhangID: fjiezhangID ,from:'jiezhangdanju'}});
+
+            // var fjzid = obj.item.fjzid;
+            // var fdjh = obj.item.fdjh;
+            // this.$router.replace({path: '/paydetails',query: { fjzid: fjzid,fdjh:fdjh }});
            
         },
    
@@ -58,7 +62,7 @@ export default {
         async danjuInfo() {
             try {
                 this.loading = true;
-                const response = await this.$axios.get('/zizhuji/danjuInfo');
+                const response = await this.$axios.get('/zizhuji/jiezhangdanju');
                 if (response.data){
                     if(response.data.code == 0){
                         console.log(response.data.result);

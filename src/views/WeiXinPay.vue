@@ -2,15 +2,14 @@
     <div>
         <v-container>
             <v-row>
-                <v-col align="left" ><v-btn size="x-large" style="margin-top: 8px;" @click="$router.replace('/paydetails')">返回</v-btn></v-col>
+                <v-col align="left" ><v-btn size="x-large" style="margin-top: 8px;" @click="$router.replace({path:'/paydetails',query:{fjzid:this.fjzid,fdjh:this.fdjh}})">返回</v-btn></v-col>
                 <v-col align="center" style="font-size: 40px;font-weight: bold;">微信支付</v-col>
-                <v-col align="right"><v-btn size="x-large" style="margin-top: 8px;" @click="quit()">退出</v-btn></v-col>
+                <v-col align="right"><v-btn size="x-large" style="margin-top: 8px;" @click="this.$router.replace('/'); ">退出</v-btn></v-col>
             </v-row>
             <v-row><v-col align="center" style="font-size: 30px;">金额：{{money}}元</v-col></v-row>
             <v-row><v-col align="center" style="font-size: 20px;">{{ countdown }}秒后自动关闭，请及时支付，超时后订单将自动取消。</v-col></v-row>
             <v-row><v-col align="center"><vue-qr :text="payurl" size="250"></vue-qr></v-col></v-row>
-            <!-- <v-row><v-col align="center" v-if="succeedFlag" style="color:green;font-size: 16px;" >{{successMsg}}</v-col></v-row> -->
-            <v-row><v-col align="center" ><v-btn size="x-large" @click="jiezhang()" >本地结账</v-btn></v-col></v-row>
+            <!-- <v-row><v-col align="center" ><v-btn size="x-large" @click="jiezhang()" >本地结账</v-btn></v-col></v-row> -->
             <v-row><v-col align="center" ><v-btn size="x-large" @click="succeed()" >假装支付成功</v-btn></v-col></v-row>
             <v-row><v-col><v-alert density="compact" title="失败" type="error"  v-show="errFlag">{{ errmsg }}</v-alert></v-col></v-row>
             <v-row><v-col><v-alert density="compact"  title="成功" type="success"  v-show="succeedFlag">{{ successMsg }}</v-alert></v-col></v-row>
@@ -21,7 +20,6 @@
 </template>
 
 <script>
-import { mapState,mapActions } from 'vuex'
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 export default {
     name: 'WeiXinPay',
@@ -40,26 +38,26 @@ export default {
             timer: null,
             countdown: 120,
             timer2: null,
+
+            fjzid: '',
+            fdjh: '',
             
         }
     },
     mounted() { 
+        this.fjzid = this.$route.query.fjzid;
+        this.fdjh = this.$route.query.fdjh;
         this.getQRCode();
         this.startCountdown();
     },
     computed: {
-       ...mapState(['fjzid','fzyzd']),
+
     },
     beforeUnmount(){
         clearInterval(this.timer); // 组件销毁时清除定时器
         clearTimeout(this.timer2); 
     },
     methods: {
-        ...mapActions(['clearData']),
-        quit(){
-            this.clearData();
-            this.$router.replace('/'); 
-        },
 
         // 获取微信支付二维码
         async getQRCode(){

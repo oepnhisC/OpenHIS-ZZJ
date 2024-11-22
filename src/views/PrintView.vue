@@ -2,22 +2,23 @@
     <div>
         <v-container>
             <v-row>
-                <v-col align="left" ><v-btn size="x-large" style="margin-top: 8px;" @click="$router.replace('/danju')">返回</v-btn></v-col>
+                <v-col align="left" ><v-btn size="x-large" style="margin-top: 8px;" @click="goback()">返回</v-btn></v-col>
                 <v-col align="center" style="font-size: 40px;font-weight: bold;">打印</v-col>
-                <v-col align="right"><v-btn size="x-large" style="margin-top: 8px;" @click="quit()">退出</v-btn></v-col>
+                <v-col align="right"><v-btn size="x-large" style="margin-top: 8px;" @click="this.$router.replace('/'); ">退出</v-btn></v-col>
             </v-row>
             <v-row><v-col align="center" style="font-size: 20px;">自动打印中，请稍候...</v-col></v-row>
             <v-row><v-progress-linear indeterminate ></v-progress-linear></v-row>
             <v-row>
                 <v-col align="center"><v-btn size="x-large" @click="print('XP')">打印小票</v-btn></v-col>
                 <v-col align="center"><v-btn size="x-large" @click="print('ZYD')">打印指引单</v-btn></v-col>
-                <v-col align="center"><v-btn size="x-large" @click="print('YXD')">打印影像单</v-btn></v-col>
-                <v-col align="center"><v-btn size="x-large" @click="print('WCLQD')">打印卫材领取单</v-btn></v-col>
-                <v-col align="center"><v-btn size="x-large" @click="print('CXZYD')">打印采血指引单</v-btn></v-col>
-                <v-col align="center"><v-btn size="x-large" @click="print('FKZLD')">打印妇科治疗单</v-btn></v-col>
-                <v-col align="center"><v-btn size="x-large" @click="print('JY')">打印检验条码</v-btn></v-col>
-                <v-col align="center"><v-btn size="x-large" @click="printFaPiao()">打印发票</v-btn></v-col>
+                <v-col align="center" v-show="yingxiangdanFlag"><v-btn size="x-large" @click="print('YXD')" >打印影像单</v-btn></v-col>
+                <v-col align="center" v-show="wclqddanFlag"><v-btn size="x-large" @click="print('WCLQD')" >打印卫材领取单</v-btn></v-col>
+                <v-col align="center" v-show="cxzyddanFlag"><v-btn size="x-large" @click="print('CXZYD')" >打印采血指引单</v-btn></v-col>
+                <v-col align="center" v-show="fkzldanFlag"><v-btn size="x-large" @click="print('FKZLD')" >打印妇科治疗单</v-btn></v-col>
+                <v-col align="center" v-show="jydanFlag"><v-btn size="x-large" @click="print('JY')" >打印检验条码</v-btn></v-col>
+                <v-col align="center" v-show="fapiaoFlag"><v-btn size="x-large" @click="printFaPiao()">打印发票 (提倡环保，建议自行下载电子发票)</v-btn></v-col>
             </v-row>
+            <v-row><v-col><v-alert density="compact" title="失败" type="error"  v-show="errFlag">{{ errmsg }}</v-alert></v-col></v-row>
         </v-container>
         <div ref="xiaopiao" class="xiaopiao" > 
             <v-container  style="font-size:40px;padding-left: 40px;" >
@@ -272,7 +273,6 @@
 
 
 <script>
-import { mapState,mapActions } from 'vuex'
 import JianYanTiaoMa from '@/components/JianYanTiaoMa.vue';
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 import html2canvas from 'html2canvas'
@@ -339,21 +339,27 @@ export default {
             jianyantiaomaFlag:false,
             fapiaoFlag:false,
 
+            errFlag:false,
+            errmsg:'',
 
-
+            jiezhangID:0,
+            wherefrom:'',
         }
     },
     mounted() {
-       this.getHeadInfo();
-       this.getFeiYong();
-       this.getZhiYinDan();
-       this.getYingXiangDan();
-       this.getZhuYaoZhenDuan();
-       this.getWeiCaiDan();
-       this.getCaixieDan();
-       this.getFuKeDan();
-       this.getJianYanTiaoMa();
-       this.getFaPiao();
+
+        this.jiezhangID = this.$route.query.fjiezhangID;
+        this.wherefrom =this.$route.query.from;
+        this.getHeadInfo(this.jiezhangID);
+        this.getFeiYong(this.jiezhangID);
+        this.getZhiYinDan(this.jiezhangID);
+        this.getYingXiangDan(this.jiezhangID);
+        this.getZhuYaoZhenDuan(this.jiezhangID);
+        this.getWeiCaiDan(this.jiezhangID);
+        this.getCaixieDan(this.jiezhangID);
+        this.getFuKeDan(this.jiezhangID);
+        this.getJianYanTiaoMa(this.jiezhangID);
+        this.getFaPiao(this.jiezhangID);
        
     },
     computed: {
@@ -367,15 +373,19 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['clearData']),
 
-        quit(){
-            this.clearData();
-            this.$router.replace('/'); 
+        goback(){
+            if (this.wherefrom == 'jiezhangdanju'){
+                this.$router.replace('/jiezhangdanju')
+            }else {
+                this.$router.replace('/danju')
+            }
+
         },
+   
         // 小票头部信息
         async getHeadInfo(){
-            const response = await this.$axios.get('/zizhuji/printInfoHeader');
+            const response = await this.$axios.get('/zizhuji/printInfoHeader',{params:{fjiezhangID:this.jiezhangID}});
             if (response.data){
                 if(response.data.code == 0){
                     let headerData = response.data.result[0]
@@ -392,18 +402,17 @@ export default {
                 }else{
                     console.log(response.data);
                     this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    this.errmsg = '获取头部信息失败';
                 }
             }
         },
 
         // 收费凭据
         async getFeiYong(){
-            const response = await this.$axios.get('/zizhuji/feiYong');
+            const response = await this.$axios.get('/zizhuji/feiYong',{params:{fjiezhangID:this.jiezhangID}});
             if (response.data){
                 if(response.data.code == 0){
                     let result = response.data;
-                    console.log(result);
                     this.fzfy = result.fzfy;
                     let fzff = result.fzffs[0];
                     this.fPOS = fzff.fPOS;
@@ -426,60 +435,57 @@ export default {
                 }else{
                     console.log(response.data);
                     this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    this.errmsg = '获取收费凭据失败';
                 }
             }
         },
 
         // 指引单信息
         async getZhiYinDan(){
-            const response = await this.$axios.get('/zizhuji/zhiyindan');
+            const response = await this.$axios.get('/zizhuji/zhiyindan',{params:{fjiezhangID:this.jiezhangID}});
             if (response.data){
                 if(response.data.code == 0){
                     let result = response.data;
-                    console.log(result);
                     this.zhiyindan =result.result;
                     this.zhiyindanFlag = true;
                 }else{
                     this.zhiyindanFlag = false;
                     console.log(response.data);
-                    this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    // this.errFlag = true;
+                    // this.errmsg = response.data.result ;
                 }
             }
         },
 
         // 影像单信息
         async getYingXiangDan(){
-            const response = await this.$axios.get('/zizhuji/yingxiangdan');
+            const response = await this.$axios.get('/zizhuji/yingxiangdan',{params:{fjiezhangID:this.jiezhangID}});
             if (response.data){
                 if(response.data.code == 0){
                     let result = response.data;
-                    console.log(result);
                     this.yingxiangdan =result.result;
                     this.yingxiangdanFlag = true;
                 }else{
                     this.yingxiangdanFlag = false;
                     console.log(response.data);
-                    this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    // this.errFlag = true;
+                    // this.errmsg = '获取影像单失败' ;
                 }
             }
         },
 
         // 主要诊断
         async getZhuYaoZhenDuan(){
-            const response = await this.$axios.get('/zizhuji/zhuyaozhenduan');
+            const response = await this.$axios.get('/zizhuji/zhuyaozhenduan',{params:{fjiezhangID:this.jiezhangID}});
             if (response.data){
                 if(response.data.code == 0){
                     let result = response.data;
-                    console.log(result);
                     this.fzyzd =result.result;
 
                 }else{
                     console.log(response.data);
                     this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    this.errmsg = '获取主要诊断失败';
                 }
             }
         },
@@ -487,79 +493,75 @@ export default {
 
         // 卫材单信息
         async getWeiCaiDan(){
-            const response = await this.$axios.get('/zizhuji/weicaidan');
+            const response = await this.$axios.get('/zizhuji/weicaidan',{params:{fjiezhangID:this.jiezhangID}});
             if (response.data){
                 if(response.data.code == 0){
                     let result = response.data;
-                    console.log(result);
                     this.weicaidan =result.result;
                     this.weicaidanFlag = true;
                 }else{
                     this.weicaidanFlag = false;
                     console.log(response.data);
-                    this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    // this.errFlag = true;
+                    // this.errmsg = '获取卫材单失败';
                 }
             }
         },
 
         // 采血单信息
         async getCaixieDan(){
-            const response = await this.$axios.get('/zizhuji/caixiedan');
+            const response = await this.$axios.get('/zizhuji/caixiedan',{params:{fjiezhangID:this.jiezhangID}});
             if (response.data){
                 if(response.data.code == 0){
                     let result = response.data;
-                    console.log(result);
                     this.caixiedan =result.result;
                     this.caixiedanFlag = true;
                 }else{
                     this.caixiedanFlag = false;
                     console.log(response.data);
-                    this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    // this.errFlag = true;
+                    // this.errmsg = '获取采血单失败';
                 }
             }
         },
 
         // 妇科治疗单信息
         async getFuKeDan(){
-            const response = await this.$axios.get('/zizhuji/fukedan');
+            const response = await this.$axios.get('/zizhuji/fukedan',{params:{fjiezhangID:this.jiezhangID}});
             if (response.data){
                 if(response.data.code == 0){
                     let result = response.data;
-                    console.log(result);
                     this.fukedan =result.result;
                     this.fukedanFlag = true;
                 }else{
                     this.fukedanFlag = false;
                     console.log(response.data);
-                    this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    // this.errFlag = true;
+                    // this.errmsg = '获取妇科治疗单失败';
                 }
             }
         },
 
         // 检验条码
         async getJianYanTiaoMa(){
-            const response = await this.$axios.get('/zizhuji/jianyantiaoma');
+            const response = await this.$axios.get('/zizhuji/jianyantiaoma',{params:{fjiezhangID:this.jiezhangID}});
             if (response.data){
                 if(response.data.code == 0){
                     let result = response.data;
-                    console.log(result);
                     this.jianyantiaoma =result.result;
                     this.jianyantiaomaFlag = true;
                 }else{
                     this.jianyantiaomaFlag = false;
                     console.log(response.data);
-                    this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    // this.errFlag = true;
+                    // this.errmsg = '获取检验条码失败';
                 }
             }
         },
 
         // 发票
         async getFaPiao(){
-            const response = await this.$axios.get('/zizhuji/fapiao');
+            const response = await this.$axios.get('/zizhuji/fapiao',{params:{fjiezhangID:this.jiezhangID}});
             if (response.data){
                 if(response.data.code == 0){
                     let result = response.data;
@@ -568,7 +570,7 @@ export default {
                 }else{
                     console.log(response.data);
                     this.errFlag = true;
-                    this.errmsg = response.data.result + '，请重试，重试依然失败请联系管理员';
+                    this.errmsg = response.data.result ;
                 }
             }
         },
@@ -597,15 +599,14 @@ export default {
             }
             if(Array.isArray(element)){
                 for(let i=0;i<element.length;i++){
-                    console.log(element[i]);
                     await this.printSingle(element[i],type);
                 }
             } else {
-                console.log(element);
                 await this.printSingle(element,type);
             }
        
         },
+        // 根据类型打印小票
         async printSingle(element,type) {
             const canvas = await  html2canvas(element);
             const dataURL = canvas.toDataURL('image/jpg');
@@ -615,10 +616,11 @@ export default {
         },
         // 打印发票
         async printFaPiao() {
+
             for(let i=0;i<this.fapiao.length;i++){
                 const response = await this.$axios.post('http://127.0.0.1:15588/print', 
                     { image: this.fapiao[i],type:'FP' } );
-            console.log(response.data);
+                console.log(response.data);
             }
         }
 
@@ -630,18 +632,7 @@ export default {
 
 <style scoped>
 .xiaopiao{width:800px;}
-.row {
-  width: 100%;
-  display: flex;
-  height: 80px;
-}
-
-.column {
-  border: 2.5px solid black;
-  flex-basis: 50%;
-}
-
-.tiaoma{
-    width:1100px;height:580px;display: inline-block;vertical-align:top;overflow:hidden;
-}
+.row {  width: 100%;  display: flex;  height: 80px;}
+.column {  border: 2.5px solid black;  flex-basis: 50%;}
+.tiaoma{    width:1100px;height:580px;display: inline-block;vertical-align:top;overflow:hidden;}
 </style>
