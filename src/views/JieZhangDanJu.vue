@@ -30,7 +30,7 @@ export default {
                 { title: '年龄', value: 'fage' },
                 { title: '门诊号', value: 'fmzh' },
                 { title: '性别', value: 'fsex' },
-                { title: '总额', value: 'fze' },
+                { title: '总额(元)', value: 'fze' },
                 { title: '开单人', value: 'fkdr' },
                 { title: '开单时间', value: 'fkdsj' }
             ],

@@ -12,10 +12,10 @@
                 <v-col align="center"><v-btn size="x-large" @click="print('XP')">打印小票</v-btn></v-col>
                 <v-col align="center"><v-btn size="x-large" @click="print('ZYD')">打印指引单</v-btn></v-col>
                 <v-col align="center" v-show="yingxiangdanFlag"><v-btn size="x-large" @click="print('YXD')" >打印影像单</v-btn></v-col>
-                <v-col align="center" v-show="wclqddanFlag"><v-btn size="x-large" @click="print('WCLQD')" >打印卫材领取单</v-btn></v-col>
-                <v-col align="center" v-show="cxzyddanFlag"><v-btn size="x-large" @click="print('CXZYD')" >打印采血指引单</v-btn></v-col>
-                <v-col align="center" v-show="fkzldanFlag"><v-btn size="x-large" @click="print('FKZLD')" >打印妇科治疗单</v-btn></v-col>
-                <v-col align="center" v-show="jydanFlag"><v-btn size="x-large" @click="print('JY')" >打印检验条码</v-btn></v-col>
+                <v-col align="center" v-show="weicaidanFlag"><v-btn size="x-large" @click="print('WCLQD')" >打印卫材领取单</v-btn></v-col>
+                <v-col align="center" v-show="caixiedanFlag"><v-btn size="x-large" @click="print('CXZYD')" >打印采血指引单</v-btn></v-col>
+                <v-col align="center" v-show="fukedanFlag"><v-btn size="x-large" @click="print('FKZLD')" >打印妇科治疗单</v-btn></v-col>
+                <v-col align="center" v-show="jianyantiaomaFlag"><v-btn size="x-large" @click="print('JY')" >打印检验条码</v-btn></v-col>
                 <v-col align="center" v-show="fapiaoFlag"><v-btn size="x-large" @click="printFaPiao()">打印发票 (提倡环保，建议自行下载电子发票)</v-btn></v-col>
             </v-row>
             <v-row><v-col><v-alert density="compact" title="失败" type="error"  v-show="errFlag">{{ errmsg }}</v-alert></v-col></v-row>
@@ -569,8 +569,8 @@ export default {
                     this.fapiao =result.result;
                 }else{
                     console.log(response.data);
-                    this.errFlag = true;
-                    this.errmsg = response.data.result ;
+                    // this.errFlag = true;
+                    // this.errmsg = response.data.result ;
                 }
             }
         },

@@ -10,6 +10,7 @@
           <v-col align="center"><v-btn @click="this.$router.replace('/danju');" size="x-large">缴费</v-btn> </v-col>
           <v-col align="center"><v-btn @click="this.$router.replace('/jiezhangdanju');" size="x-large">查询已缴费单据</v-btn> </v-col>
         </v-row>
+        <v-row><v-col align="center"><v-btn size="x-large">更多功能正在开发中...</v-btn></v-col></v-row>
         <v-row><v-col><v-alert density="compact" title="失败" type="error"  v-show="errFlag">{{ errmsg }}</v-alert></v-col></v-row>
       </v-container>
       
