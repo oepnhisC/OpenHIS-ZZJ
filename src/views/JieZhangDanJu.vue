@@ -2,9 +2,9 @@
     <div>
         <v-container>
             <v-row>
-                <v-col align="left" ><v-btn size="x-large" style="margin-top: 8px;" @click="$router.replace('/xuangongneng')">返回</v-btn></v-col>
+                <v-col align="left" ><v-btn size="x-large" style="margin-top: 8px;" @click="$router.replace('/xuangongneng')" prepend-icon="mdi-arrow-left" color="warning">返回</v-btn></v-col>
                 <v-col align="center" style="font-size: 40px;font-weight: bold;">已缴费单据</v-col>
-                <v-col align="right"><v-btn  size="x-large" style="margin-top: 8px;" @click="this.$router.replace('/');">退出</v-btn></v-col>
+                <v-col align="right"><v-btn  size="x-large" style="margin-top: 8px;" @click="this.$router.replace('/');" prepend-icon="mdi-logout" color="error">退出</v-btn></v-col>
             </v-row>
             <v-row><v-col align="center" style="font-size: 30px;">点击对应单据进入打印页面</v-col></v-row>
             <v-row><v-col><v-alert density="compact" title="失败" type="error"  v-show="errFlag">{{ errmsg }}</v-alert></v-col></v-row>
@@ -41,7 +41,7 @@ export default {
         }
     },
     mounted() {
-        this.danjuInfo();
+        this.getYiJieZhangDanJu();
     },
 
     methods: {
@@ -51,28 +51,23 @@ export default {
             console.log(obj.item);
             let fjiezhangID = obj.item.fjiezhangID;
             this.$router.replace({path: '/printview',query: { fjiezhangID: fjiezhangID ,from:'jiezhangdanju'}});
-
-            // var fjzid = obj.item.fjzid;
-            // var fdjh = obj.item.fdjh;
-            // this.$router.replace({path: '/paydetails',query: { fjzid: fjzid,fdjh:fdjh }});
            
         },
    
         //获取单据信息
-        async danjuInfo() {
+        async getYiJieZhangDanJu() {
             try {
                 this.loading = true;
-                const response = await this.$axios.get('/zizhuji/jiezhangdanju');
+                const response = await this.$axios.get('/zizhujiDanJu/getYiJieZhangDanJu');
                 if (response.data){
-                    if(response.data.code == 0){
-                        console.log(response.data.result);
-                        this.danJuList = response.data.result;
+                    let result = response.data;
+                    if(result.code == 0){
+                        this.danJuList = result.result;
                         this.errFlag = false;
                     }else{
                         this.danJuList = [];
-                        console.log(response.data);
                         this.errFlag = true;
-                        this.errmsg = response.data.result ;
+                        this.errmsg = result.result ;
                     }
                 }
                 this.loading = false;
